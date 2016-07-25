@@ -1,5 +1,7 @@
 package com.augmentis.ayp.crimin;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,24 +17,45 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Noppharat on 7/18/2016.
  */
 public class CrimeFragment extends Fragment {
-    private Crime crime;
-    private EditText editText;
 
+    private static final String CRIME_ID = "CrimeFragment.CRIME_ID";
+    private static final String CRIME_POSITION = "CrimeFragment.CRIME_POS";
+
+    private Crime crime;
+    private int position;
+    private EditText editText;
     private Button crimeDateButton;
     private CheckBox crimeSolvedCheckbox;
 
+    public CrimeFragment(){}
+
+    public static CrimeFragment newInstance(UUID crimeId, int position){
+        Bundle args = new Bundle();
+        args.putSerializable(CRIME_ID, crimeId);
+        args.putInt(CRIME_POSITION, position);
+        CrimeFragment crimeFragment = new CrimeFragment();
+        crimeFragment.setArguments(args);
+        return crimeFragment;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        crime = new Crime();
 
-        Date d = new Date();
-        crime.setCrimeDate(d);
+        UUID crimeId = (UUID) getArguments().getSerializable(CRIME_ID);
+        position = getArguments().getInt(CRIME_POSITION);
+        crime = CrimeLab.getInstance().getCrimeById(crimeId);
+        Log.d(CrimeListFragment.TAG, "crime.getId()= " + crime.getId());
+        Log.d(CrimeListFragment.TAG, "crime.getTitle()= " + crime.getTitle());
+//        crime = new Crime();
+//
+//        Date d = new Date();
+//        crime.setCrimeDate(d);
     }
 
     @Override
@@ -41,6 +64,7 @@ public class CrimeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
         editText = (EditText) v.findViewById(R.id.crime_title);
+        editText.setText(crime.getTitle());
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -49,7 +73,7 @@ public class CrimeFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                crime.setTitle(s.toString());
             }
 
             @Override
@@ -69,18 +93,33 @@ public class CrimeFragment extends Fragment {
         crimeDateButton.setEnabled(false);
 
         crimeSolvedCheckbox = (CheckBox) v.findViewById(R.id.crime_solve);
+        crimeSolvedCheckbox.setChecked(crime.isSolved());
         crimeSolvedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 crime.setSolved(isChecked);
-                Log.d(CrimeActivity.TAG, "Crime:" + crime.toString());
+                Log.d(CrimeListFragment.TAG, "Crime:" + crime.toString());
             }
         });
         //check ว่า layout นั้นมี button หรือเปล่า
+
+        Intent intent = new Intent();
+        intent.putExtra("position", position);
+        getActivity().setResult(Activity.RESULT_OK, intent);
 
         return v;
 
     }
 
+
+
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//
+//        Intent intent = new Intent();
+//        intent.putExtra("position", position);
+//        getActivity().setResult(Activity.RESULT_OK, intent);
+//    }
 
 }
