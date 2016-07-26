@@ -25,7 +25,7 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView _crimeRecyclerView;
     private CrimeAdapter _adapter;
     protected static final String TAG = "CRIME_LIST";
-    private int crimePos;
+    private Integer[] crimePos;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,8 +42,9 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_UPDATE_CRIME){
-            if(requestCode == Activity.RESULT_OK){
-                crimePos = (int) data.getExtras().get("position");
+            if(resultCode == Activity.RESULT_OK){
+//                crimePos = (int) data.getExtras().get("position");
+                crimePos = (Integer[]) data.getExtras().get("position");
                 Log.d(TAG , "get crimePos = " + crimePos);
             }
 
@@ -76,8 +77,14 @@ public class CrimeListFragment extends Fragment {
             _adapter = new CrimeAdapter(crimes);
             _crimeRecyclerView.setAdapter(_adapter);
         }else{
-           // _adapter.notifyDataSetChanged();
-            _adapter.notifyItemChanged(crimePos);
+            //_adapter.notifyDataSetChanged();
+//            _adapter.notifyItemChanged(crimePos);
+            if(crimePos != null){
+                for (Integer pos : crimePos){
+                    _adapter.notifyItemChanged(pos);
+
+                }
+            }
         }
     }
 
@@ -112,7 +119,7 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             Intent intent = CrimePagerActivity.newIntent(getActivity(), _crime.getId(), _position);
-            crimePos = _position;
+//            crimePos = _position;
             startActivityForResult(intent, REQUEST_UPDATE_CRIME);
 
         }

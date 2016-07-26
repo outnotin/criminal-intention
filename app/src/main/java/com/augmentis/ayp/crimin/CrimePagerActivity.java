@@ -1,5 +1,6 @@
 package com.augmentis.ayp.crimin;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +24,7 @@ public class CrimePagerActivity extends FragmentActivity {
 
     private int _position;
     private UUID _crimeId;
+    private List<Integer> positionChanged = new ArrayList<>();
 
 
     @Override
@@ -54,6 +57,22 @@ public class CrimePagerActivity extends FragmentActivity {
         _viewpager.setCurrentItem(position);
         Log.d(TAG, "on Create");
 
+
+    }
+
+    protected void addPageUpdate(int position){
+
+        if(positionChanged.contains(position)){
+            return;
+        }
+
+        positionChanged.add(position);
+
+        Intent intent = new Intent();
+        Integer[] positions = positionChanged.toArray(new Integer[0]);
+        intent.putExtra("position", positions);
+        Log.d(CrimeListFragment.TAG, "send position back : " + positions);
+        setResult(Activity.RESULT_OK, intent);
     }
 
     protected static final String CRIME_ID = "crimePagerActivity.crimeId";

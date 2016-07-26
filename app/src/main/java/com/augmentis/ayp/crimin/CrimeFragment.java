@@ -73,6 +73,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 crime.setTitle(s.toString());
+                addThisPositionToResult(position);
             }
 
             @Override
@@ -97,18 +98,26 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 crime.setSolved(isChecked);
+                addThisPositionToResult(position);
                 Log.d(CrimeListFragment.TAG, "Crime:" + crime.toString());
             }
         });
         //check ว่า layout นั้นมี button หรือเปล่า
 
-        Intent intent = new Intent();
-        intent.putExtra("position", position);
-        getActivity().setResult(Activity.RESULT_OK, intent);
+//        Intent intent = new Intent();
+//        intent.putExtra("position", position);
+//        getActivity().setResult(Activity.RESULT_OK, intent);
 
         return v;
 
     }
+
+    protected void addThisPositionToResult(int position){
+        if(getActivity() instanceof CrimePagerActivity){
+            ((CrimePagerActivity) getActivity()).addPageUpdate(position);
+        }
+    }
+
 
 
 }
