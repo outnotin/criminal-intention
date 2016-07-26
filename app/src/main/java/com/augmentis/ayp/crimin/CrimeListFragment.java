@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -57,9 +56,12 @@ public class CrimeListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //view have inflate
         View v = inflater.inflate(R.layout.fragment_crime_list, container, false);
 
+
         _crimeRecyclerView = (RecyclerView) v.findViewById(R.id.crime_recycler_view);
+        //recyclerview need setLayoutManager to start view
         _crimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
@@ -68,7 +70,7 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateUI(){
-        CrimeLab crimeLab = CrimeLab.getInstance();
+        CrimeLab crimeLab = CrimeLab.getInstance(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
         if(_adapter == null){
             _adapter = new CrimeAdapter(crimes);
@@ -109,7 +111,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = CrimeActivity.newIntent(getActivity(), _crime.getId(), _position);
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), _crime.getId(), _position);
             crimePos = _position;
             startActivityForResult(intent, REQUEST_UPDATE_CRIME);
 

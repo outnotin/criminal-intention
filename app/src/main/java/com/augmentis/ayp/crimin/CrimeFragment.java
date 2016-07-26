@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -49,7 +48,7 @@ public class CrimeFragment extends Fragment {
 
         UUID crimeId = (UUID) getArguments().getSerializable(CRIME_ID);
         position = getArguments().getInt(CRIME_POSITION);
-        crime = CrimeLab.getInstance().getCrimeById(crimeId);
+        crime = CrimeLab.getInstance(getActivity()).getCrimeById(crimeId);
         Log.d(CrimeListFragment.TAG, "crime.getId()= " + crime.getId());
         Log.d(CrimeListFragment.TAG, "crime.getTitle()= " + crime.getTitle());
 //        crime = new Crime();
@@ -111,15 +110,5 @@ public class CrimeFragment extends Fragment {
 
     }
 
-
-
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//
-//        Intent intent = new Intent();
-//        intent.putExtra("position", position);
-//        getActivity().setResult(Activity.RESULT_OK, intent);
-//    }
 
 }

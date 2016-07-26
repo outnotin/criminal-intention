@@ -11,6 +11,8 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //create container and put fragment
+        //CrimeListActivity is responsed in create fragment
         setContentView(R.layout.activity_single_fragment);
 
         Log.d(CrimeListFragment.TAG, "On create activity");
