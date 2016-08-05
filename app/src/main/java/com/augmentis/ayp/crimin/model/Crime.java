@@ -1,7 +1,8 @@
-package com.augmentis.ayp.crimin;
+package com.augmentis.ayp.crimin.model;
 
 import android.text.format.DateFormat;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,10 +17,13 @@ public class Crime {
 
 
     public Crime(){
-        crimeDate = new Date();
-        id = UUID.randomUUID();
+        this(UUID.randomUUID());
     }
 
+    public Crime (UUID uuid){
+        this.id = uuid;
+        crimeDate = new Date();
+    }
     public UUID getId() {
         return id;
     }
@@ -52,9 +56,22 @@ public class Crime {
         this.solved = solved;
     }
 
+    public String getStringDateTime(Date inputDate){
+        return new SimpleDateFormat("dd MMMM yyyy h:MM a").format(inputDate);
+    }
+
     public String getStringDate(Date inputDate){
         DateFormat dfm = new DateFormat();
         return dfm.format("dd MMMM yyyy", inputDate).toString();
+    }
+
+    public String getSringTime(Date inputDate){
+        DateFormat dfm = new DateFormat();
+        return dfm.format("HH : mm", inputDate).toString();
+    }
+
+    public String getPhotoFileName(){
+        return "IMG_" + getId().toString() + ".jpg";
     }
     @Override
     public String toString() {

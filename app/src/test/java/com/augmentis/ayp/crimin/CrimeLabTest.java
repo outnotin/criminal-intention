@@ -1,5 +1,8 @@
 package com.augmentis.ayp.crimin;
 
+import com.augmentis.ayp.crimin.model.Crime;
+import com.augmentis.ayp.crimin.model.CrimeLab;
+
 import org.junit.Test;
 
 import java.util.Arrays;
