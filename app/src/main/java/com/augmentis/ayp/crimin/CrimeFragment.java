@@ -195,7 +195,7 @@ public class CrimeFragment extends Fragment {
                     FragmentManager fm = getFragmentManager();
                     fm.beginTransaction().replace(R.id.detail_fragment_container, newDetailFragment).commit();
                 }else{
-
+                    getFragmentManager().beginTransaction().detach(CrimeFragment.this).commit();
                 }
 
             }
