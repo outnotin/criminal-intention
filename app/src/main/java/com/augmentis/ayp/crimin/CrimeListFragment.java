@@ -45,12 +45,14 @@ public class CrimeListFragment extends Fragment {
 
     public interface Callback{
         void onCrimeSelected(Crime crime);
+        void onOpenSelectFirst();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         callback = (Callback) context;
+        callback.onOpenSelectFirst();
     }
 
     @Override
@@ -117,11 +119,13 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         selectFirstItem();
+
 
     }
 
